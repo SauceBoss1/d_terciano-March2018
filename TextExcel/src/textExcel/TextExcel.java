@@ -16,12 +16,12 @@ public class TextExcel {
 		boolean endLoop = true;
 		String userAction="";
 		while (endLoop) {
+			System.out.print("Enter commands: ");
+			userAction = userInput.nextLine();
 			if (userAction.equals("quit")) {
 				endLoop = false;
-				System.out.println("<Spreadsheet terminated>");
+				System.out.println("<TextExcel terminated>");
 			} else {
-				System.out.print("Enter commands: ");
-				userAction = userInput.nextLine();
 				System.out.println(spreadsheet.processCommand(userAction));
 			}
 		}

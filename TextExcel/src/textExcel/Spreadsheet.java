@@ -21,8 +21,37 @@ public class Spreadsheet implements Grid {
 
 	@Override
 	public String processCommand(String command) {
-		// TODO Auto-generated method stub
-		return "";
+		String[] userCommand = command.split(" ", 3);
+		if (userCommand.length == 3) {// might make method of assigning all values
+			SpreadsheetLocation location = new SpreadsheetLocation(userCommand[0].toLowerCase());
+			grid[location.getRow()][location.getCol()] = new TextCell(userCommand[2]);
+			return getGridText();
+		} else if (userCommand[0].toLowerCase().equals("clear")) {
+			if(userCommand.length>=2) {
+				clear(userCommand[1]);
+				return getGridText();
+			}else {
+				clear();
+				return getGridText();
+			}
+		} else if (userCommand.length == 1) {
+			return contentsOfCell(userCommand[0]);
+		} else {
+			return "command unknown";
+		}
+	}
+
+	public void clear() {
+		for (int row = 0; row < grid.length; row++) {
+			for (int col = 0; col < grid[row].length; col++) {
+				grid[row][col] = new EmptyCell();
+			}
+		}
+	}
+
+	public void clear(String location) {
+		SpreadsheetLocation loca = new SpreadsheetLocation(location);
+		grid[loca.getRow()][loca.getCol()] = new EmptyCell();
 	}
 
 	@Override
@@ -42,18 +71,33 @@ public class Spreadsheet implements Grid {
 
 	@Override
 	public String getGridText() {
-		String gridOutput="";
-		for(char i='A'; i<'L';i++) {
-			gridOutput+="|"+i+"         |";
+		String gridOutput = "";
+		gridOutput += "   |";
+		for (char i = 'A'; i <= 'L'; i++) {
+			gridOutput += i + "         |";
 		}
-		gridOutput+="\n";
-		for(int i=0;i<grid.length;i++) {
-			gridOutput+=(i+1);
-			for(int j=0;i<grid[i].length;j++) {
-				
+		gridOutput += "\n";
+		for (int i = 0; i < grid.length; i++) {
+			if (i < 9) {
+				gridOutput += (1 + i) + "  |";
+				for (int j = 0; j < grid[i].length; j++) {
+					gridOutput += grid[i][j].abbreviatedCellText() + "|";
+				}
+				gridOutput += "\n";
+			} else {
+				gridOutput += (i + 1) + " |";
+				for (int j = 0; j < grid[i].length; j++) {
+					gridOutput += grid[i][j].abbreviatedCellText() + "|";
+				}
+				gridOutput += "\n";
 			}
 		}
-		return null;
+		return gridOutput;
+	}
+
+	public String contentsOfCell(String location) {
+		SpreadsheetLocation loca = new SpreadsheetLocation(location);
+		return getCell(loca).fullCellText();
 	}
 
 }
