@@ -48,7 +48,7 @@ public class Spreadsheet implements Grid {
 		}
 		gridOutput+="\n";
 		for(int i=0;i<grid.length;i++) {
-			gridOutput+=(i+1)
+			gridOutput+=(i+1);
 			for(int j=0;i<grid[i].length;j++) {
 				
 			}
