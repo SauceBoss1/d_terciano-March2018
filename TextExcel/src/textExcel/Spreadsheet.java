@@ -78,14 +78,15 @@ public class Spreadsheet implements Grid {
 		}
 		gridOutput += "\n";
 		for (int i = 0; i < grid.length; i++) {
+			gridOutput+=(1+i);
 			if (i < 9) {
-				gridOutput += (1 + i) + "  |";
+				gridOutput +=  "  |";
 				for (int j = 0; j < grid[i].length; j++) {
 					gridOutput += grid[i][j].abbreviatedCellText() + "|";
 				}
 				gridOutput += "\n";
 			} else {
-				gridOutput += (i + 1) + " |";
+				gridOutput +=  " |";
 				for (int j = 0; j < grid[i].length; j++) {
 					gridOutput += grid[i][j].abbreviatedCellText() + "|";
 				}
