@@ -16,7 +16,7 @@ public abstract class RealCell implements Cell {
 
 	@Override
 	public String abbreviatedCellText() {
-		String dummyInput = userInput;
+		String dummyInput = getUserInput();
 		if(dummyInput.contains("%") && dummyInput.contains(".")) {
 			dummyInput = dummyInput.replace(dummyInput.substring(dummyInput.indexOf(".")),"%");
 		}else {
