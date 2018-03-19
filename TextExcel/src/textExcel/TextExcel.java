@@ -14,7 +14,7 @@ public class TextExcel {
 		Spreadsheet spreadsheet = new Spreadsheet();
 		Scanner userInput = new Scanner(System.in);
 		boolean endLoop = true;
-		String userAction="";
+		String userAction = "";
 		while (endLoop) {
 			System.out.print("Enter commands: ");
 			userAction = userInput.nextLine();
@@ -25,6 +25,6 @@ public class TextExcel {
 				System.out.println(spreadsheet.processCommand(userAction));
 			}
 		}
-		
+
 	}
 }

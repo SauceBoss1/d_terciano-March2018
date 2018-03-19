@@ -23,7 +23,7 @@ public class Spreadsheet implements Grid {
 	public String processCommand(String command) {
 		String[] userCommand = command.split(" ", 3);
 		if (userCommand.length == 3) {// might make method of assigning all values
-			cellAssignment(userCommand[0],userCommand[2]);
+			cellAssignment(userCommand[0], userCommand[2]);
 			return getGridText();
 		} else if (userCommand[0].toLowerCase().equals("clear")) {
 			if (userCommand.length >= 2) {
@@ -39,18 +39,16 @@ public class Spreadsheet implements Grid {
 			return "command unknown";
 		}
 	}
-	
-	
-	
+
 	public void cellAssignment(String loc, String content) {
 		SpreadsheetLocation location = new SpreadsheetLocation(loc.toLowerCase());
-		if (content.contains("\"")){
+		if (content.contains("\"")) {
 			grid[location.getRow()][location.getCol()] = new TextCell(content.trim());
-		}else if (content.contains("%")) {
+		} else if (content.contains("%")) {
 			grid[location.getRow()][location.getCol()] = new PercentCell(content);
-		}else if (content.contains("(")) {
+		} else if (content.contains("(")) {
 			grid[location.getRow()][location.getCol()] = new FormulaCell(content);
-		}else {
+		} else {
 			grid[location.getRow()][location.getCol()] = new ValueCell(content);
 		}
 	}
