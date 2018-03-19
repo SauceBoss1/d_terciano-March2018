@@ -23,14 +23,13 @@ public class Spreadsheet implements Grid {
 	public String processCommand(String command) {
 		String[] userCommand = command.split(" ", 3);
 		if (userCommand.length == 3) {// might make method of assigning all values
-			SpreadsheetLocation location = new SpreadsheetLocation(userCommand[0].toLowerCase());
-			grid[location.getRow()][location.getCol()] = new TextCell(userCommand[2]);
+			cellAssignment(userCommand[0],userCommand[2]);
 			return getGridText();
 		} else if (userCommand[0].toLowerCase().equals("clear")) {
-			if(userCommand.length>=2) {
+			if (userCommand.length >= 2) {
 				clear(userCommand[1]);
 				return getGridText();
-			}else {
+			} else {
 				clear();
 				return getGridText();
 			}
@@ -38,6 +37,21 @@ public class Spreadsheet implements Grid {
 			return contentsOfCell(userCommand[0]);
 		} else {
 			return "command unknown";
+		}
+	}
+	
+	
+	
+	public void cellAssignment(String loc, String content) {
+		SpreadsheetLocation location = new SpreadsheetLocation(loc.toLowerCase());
+		if (content.contains("\"")){
+			grid[location.getRow()][location.getCol()] = new TextCell(content.trim());
+		}else if (content.contains("%")) {
+			grid[location.getRow()][location.getCol()] = new PercentCell(content);
+		}else if (content.contains("(")) {
+			grid[location.getRow()][location.getCol()] = new FormulaCell(content);
+		}else {
+			grid[location.getRow()][location.getCol()] = new ValueCell(content);
 		}
 	}
 
@@ -78,15 +92,15 @@ public class Spreadsheet implements Grid {
 		}
 		gridOutput += "\n";
 		for (int i = 0; i < grid.length; i++) {
-			gridOutput+=(1+i);
+			gridOutput += (1 + i);
 			if (i < 9) {
-				gridOutput +=  "  |";
+				gridOutput += "  |";
 				for (int j = 0; j < grid[i].length; j++) {
 					gridOutput += grid[i][j].abbreviatedCellText() + "|";
 				}
 				gridOutput += "\n";
 			} else {
-				gridOutput +=  " |";
+				gridOutput += " |";
 				for (int j = 0; j < grid[i].length; j++) {
 					gridOutput += grid[i][j].abbreviatedCellText() + "|";
 				}

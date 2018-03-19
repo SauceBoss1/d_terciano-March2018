@@ -25,5 +25,6 @@ public class TextExcel {
 				System.out.println(spreadsheet.processCommand(userAction));
 			}
 		}
+		
 	}
 }
