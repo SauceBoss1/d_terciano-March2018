@@ -36,6 +36,7 @@ public class FormulaCell extends RealCell {
 			}
 		}
 		if (isNumeric) {// for now this is a setup for checkpoint 5 dont worry about this for now
+						//TODO finish other possibilities of formula
 			return calculationOfArray(userFormula);
 		} else {
 			return calculationOfArray(userFormula);// dummy operation change this when @ checkpoint 5
