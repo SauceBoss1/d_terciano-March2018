@@ -30,7 +30,7 @@ public class FormulaCell extends RealCell {
 																											// formulas
 		char[] userFormula1 = toChar(userFormula);
 		boolean isNumeric = true;
-		for (int i = 0; i < userFormula1.length; i += 2) {// checks if the entire array is using all numeric values
+		for (int i = 0; i < userFormula.length; i += 2) {// checks if the entire array is using all numeric values
 			if (!Character.isDigit(userFormula1[i])) {
 				isNumeric = false;
 			}
