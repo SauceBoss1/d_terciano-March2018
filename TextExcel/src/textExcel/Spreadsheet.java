@@ -47,7 +47,7 @@ public class Spreadsheet implements Grid {
 		} else if (content.contains("%")) {
 			grid[location.getRow()][location.getCol()] = new PercentCell(content);
 		} else if (content.contains("(")) {
-			grid[location.getRow()][location.getCol()] = new FormulaCell(content);
+			grid[location.getRow()][location.getCol()] = new FormulaCell(content, this);
 		} else {
 			grid[location.getRow()][location.getCol()] = new ValueCell(content);
 		}
@@ -79,6 +79,10 @@ public class Spreadsheet implements Grid {
 	@Override
 	public Cell getCell(Location loc) {
 		return grid[loc.getRow()][loc.getCol()];
+	}
+	
+	public Cell[][] getGrid() {
+		return this.grid;
 	}
 
 	@Override

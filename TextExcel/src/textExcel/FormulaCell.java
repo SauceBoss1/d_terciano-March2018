@@ -1,9 +1,11 @@
 package textExcel;
 
 public class FormulaCell extends RealCell {
+	private Spreadsheet spreadsheet;
 
-	public FormulaCell(String input) {
+	public FormulaCell(String input, Spreadsheet spreadsheet) {
 		super.setUserInput(input);
+		this.spreadsheet= spreadsheet;
 	}
 
 	@Override
@@ -30,19 +32,27 @@ public class FormulaCell extends RealCell {
 																											// formulas
 		char[] userFormula1 = toChar(userFormula);
 		boolean isNumeric = true;
-		int locationOfReference = 0;
 		for (int i = 0; i < userFormula.length; i += 2) {// checks if the entire array is using all numeric values
 			if (!Character.isDigit(userFormula1[i])) {
 				isNumeric = false;
-				locationOfReference = i;
 			}
 		}
 		if (isNumeric) {// for now this is a setup for checkpoint 5 dont worry about this for now
 						//TODO finish other possibilities of formula
 			return calculationOfArray(userFormula);
 		} else {
-			userFormula[locationOfReference]= userFormula[locationOfReference].fullCellText;
-			return calculationOfArray(userFormula);// dummy operation change this when @ checkpoint 5
+			for(int i = 0; i < userFormula.length;i++) {
+				if(userFormula[i].toLowerCase().charAt(0) >= 'a' && userFormula[i].toLowerCase().charAt(0) <= 'l') {
+					SpreadsheetLocation location = new SpreadsheetLocation(userFormula[i]);
+					Cell cellType = spreadsheet.getCell(location);
+					if ( cellType instanceof RealCell) {
+						userFormula[i]= ((RealCell)cellType).getDoubleValue() + "";
+					} else {
+						userFormula[i]= "";
+					}
+				}
+			}
+			return calculationOfArray(userFormula);
 		}
 
 	}
