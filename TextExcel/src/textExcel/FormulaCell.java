@@ -18,7 +18,7 @@ public class FormulaCell extends RealCell {
 
 	@Override
 	/*
-	 * abbreviates the cell
+	 * abbreviates the cell to fit 10 spaces
 	 */
 	public String abbreviatedCellText() {
 		String result = getDoubleValue() + "";
@@ -42,19 +42,12 @@ public class FormulaCell extends RealCell {
 		// operations
 		// into
 		// formulas that are easy to calculate
-		char[] userFormula1 = toChar(userFormula);// converts the first character of a string array into a char array
-		boolean isNumeric = true;
-		for (int i = 0; i < userFormula.length; i += 2) {// checks if the entire array is using all numeric values
-			if (!Character.isDigit(userFormula1[i])) {
-				isNumeric = false;// if there is a letter w/in the array then hat means its a cell reference and
-									// returns false
-			}
-		}
+		
 		/*
 		 * checks if the user formula has a sum or average method
 		 * 
-		 * if not then it checks if the user formula has cell reference and then calculates those
-		 * if there is no cell references then just calculate the array
+		 * if not then it checks if the user formula has cell reference and then
+		 * calculates those if there is no cell references then just calculate the array
 		 */
 		if (userFormula[0].toLowerCase().equals("sum")) {
 			String[] ranges = userFormula[1].split("-");
@@ -62,39 +55,21 @@ public class FormulaCell extends RealCell {
 		} else if (userFormula[0].toLowerCase().equals("avg")) {
 			String[] ranges = userFormula[1].split("-");
 			return avg(ranges[0], ranges[1]);
-		} else if (isNumeric) {// for now this is a setup for checkpoint 5 dont worry about this for now
-			return calculationOfArray(userFormula);
 		} else {
+			/*
+			 * loops through the user's given formula and tries to find if there is a cell referece
+			 * if there is then it replaces its  the cell reference with its double value
+			 */
 			for (int i = 0; i < userFormula.length; i++) {
 				if (userFormula[i].toLowerCase().charAt(0) >= 'a' && userFormula[i].toLowerCase().charAt(0) <= 'l') {
-					SpreadsheetLocation location = new SpreadsheetLocation(userFormula[i]);
-					Cell cellType = spreadsheet.getCell(location);
-					if (cellType instanceof RealCell) {
-						userFormula[i] = ((RealCell) cellType).getDoubleValue() + "";
-					} else {
-						userFormula[i] = "";
-					}
+					userFormula[i] = doubleValueOfCell(userFormula[i], spreadsheet) + "";// replaces cell reference with
+																							// its double Value
 				}
 			}
 			return calculationOfArray(userFormula);
 		}
 
 	}
-
-	/*
-	 * converts the first character of a given string array into a char array
-	 * 
-	 * this is useful for determining if a given formula has cell references or are
-	 * all numeric (number) values
-	 */
-	public char[] toChar(String[] input) {
-		char[] result = new char[input.length];
-		for (int i = 0; i < input.length; i++) {
-			result[i] = input[i].charAt(0);
-		}
-		return result;
-	}
-
 	/*
 	 * calculates the sum of the given range of cells
 	 */
@@ -178,17 +153,23 @@ public class FormulaCell extends RealCell {
 				String currentLoc = "" + j + i;// this variable keeps track of the current
 												// cell within the current iteration
 												// this also gives us the cell within the given ranges
-
-				SpreadsheetLocation loc = new SpreadsheetLocation(currentLoc);
-				Cell cellType = spreadsheet.getCell(loc);// helps find the actual cell at current location of
-															// the loop's current iteration
-				result[arrTracker] = ((RealCell) cellType).getDoubleValue();// casts the cell into a RealCell in order
-																			// to get its double value
+				result[arrTracker] = doubleValueOfCell(currentLoc, spreadsheet);// finds double at this location
 				arrTracker += 1;// helps to keep track of position of where to put the resulting
 								// getDoubleValue() in the resulting array
 			}
 		}
 		return result;
+	}
+
+	/*
+	 * ValueOfCell helps find the double at the given cell location
+	 */
+	public double doubleValueOfCell(String location, Spreadsheet spreadsheet) {
+		SpreadsheetLocation loc = new SpreadsheetLocation(location);
+		Cell cellType = spreadsheet.getCell(loc);// helps find the actual cell at current location of
+													// the loop's current iteration
+		return ((RealCell) cellType).getDoubleValue();// casts the cell into a RealCell in order
+														// to get its double value
 	}
 
 }

@@ -1,5 +1,10 @@
 package textExcel;
 
+/**
+ * 
+ * @author Derfel Terciano
+ * @version 1
+ */
 public class PercentCell extends RealCell {
 
 	public PercentCell(String userInput) {

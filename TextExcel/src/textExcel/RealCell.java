@@ -1,5 +1,10 @@
 package textExcel;
 
+/**
+ * 
+ * @author Derfel Terciano
+ * @version 1
+ */
 public abstract class RealCell implements Cell {
 
 	private String userInput;
