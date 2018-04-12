@@ -1,6 +1,5 @@
 package textExcel;
 
-// Update this file with your own code.
 
 /**
  * @author Derfel Terciano
@@ -19,7 +18,7 @@ public class Spreadsheet implements Grid {
 		}
 	}
 
-	@Override
+
 	public String processCommand(String command) {
 		String[] userCommand = command.split(" ", 3);
 		if (userCommand.length == 3) {// might make method of assigning all values
@@ -66,17 +65,17 @@ public class Spreadsheet implements Grid {
 		grid[loca.getRow()][loca.getCol()] = new EmptyCell();
 	}
 
-	@Override
+
 	public int getRows() {
 		return rowLength;
 	}
 
-	@Override
+
 	public int getCols() {
 		return columnLength;
 	}
 
-	@Override
+
 	public Cell getCell(Location loc) {
 		return grid[loc.getRow()][loc.getCol()];
 	}
@@ -85,7 +84,7 @@ public class Spreadsheet implements Grid {
 		return this.grid;
 	}
 
-	@Override
+
 	public String getGridText() {
 		String gridOutput = "";
 		gridOutput += "   |";
