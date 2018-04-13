@@ -2,8 +2,11 @@ package textExcel;
 
 public class TextCell implements Cell{
 	private String text;
-
-
+	
+	
+	/*
+	 * abbreviates text to 10 space
+	 */
 	public String abbreviatedCellText() {
 		String abbreviatedText="";
 		if(text.substring(1,text.length()-1).length()<10) {
@@ -18,7 +21,7 @@ public class TextCell implements Cell{
 	}
 
 
-	public String fullCellText() {
+	public String fullCellText() {//like a getter method
 		
 		return text;
 	}

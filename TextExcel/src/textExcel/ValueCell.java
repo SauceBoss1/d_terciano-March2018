@@ -10,7 +10,7 @@ public class ValueCell extends RealCell{
 		super.setUserInput(userInput);
 	}
 
-	public double getDoubleValue() {
+	public double getDoubleValue() {//parses string into a double
 		double strInput = Double.parseDouble(super.fullCellText());
 		return strInput;
 		

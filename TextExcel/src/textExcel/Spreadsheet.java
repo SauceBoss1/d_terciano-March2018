@@ -6,10 +6,13 @@ package textExcel;
  * @version 1
  */
 public class Spreadsheet implements Grid {
-	private final int rowLength = 20;
-	private final int columnLength = 12;
-	private Cell[][] grid = new Cell[rowLength][columnLength];
+	private final int rowLength = 20;//# of rows can never be changed
+	private final int columnLength = 12;//# of columns can never be changed
+	private Cell[][] grid = new Cell[rowLength][columnLength];//creates a 2d array
 
+	/*
+	 * initializes the spreadsheet to be filled with empty cells
+	 */
 	public Spreadsheet() {
 		for (int row = 0; row < grid.length; row++) {
 			for (int col = 0; col < grid[row].length; col++) {
@@ -17,28 +20,35 @@ public class Spreadsheet implements Grid {
 			}
 		}
 	}
-
-
+	
+	
+	/*
+	 * handles the the user's type command
+	 */
 	public String processCommand(String command) {
-		String[] userCommand = command.split(" ", 3);
-		if (userCommand.length == 3) {// might make method of assigning all values
+		String[] userCommand = command.split(" ", 3);//splits the spaces only 3 times
+		if (userCommand.length == 3) {//if length 3 then assign it to the corresponding cell
 			cellAssignment(userCommand[0], userCommand[2]);
 			return getGridText();
 		} else if (userCommand[0].toLowerCase().equals("clear")) {
 			if (userCommand.length >= 2) {
-				clear(userCommand[1]);
+				clear(userCommand[1]);//clears a specific cell
 				return getGridText();
 			} else {
-				clear();
+				clear();//clears the entire spreadsheet
 				return getGridText();
 			}
-		} else if (userCommand.length == 1) {
+		} else if (userCommand.length == 1) {//checks if user wants fullCellText returned
 			return contentsOfCell(userCommand[0]);
 		} else {
 			return "command unknown";
 		}
 	}
-
+	
+	/*
+	 * checks what the input's appropriate cell type should be
+	 * then it sets that particular cell into the appropriate cell type
+	 */
 	public void cellAssignment(String loc, String content) {
 		SpreadsheetLocation location = new SpreadsheetLocation(loc.toLowerCase());
 		if (content.contains("\"")) {
@@ -51,7 +61,8 @@ public class Spreadsheet implements Grid {
 			grid[location.getRow()][location.getCol()] = new ValueCell(content);
 		}
 	}
-
+	
+	//clears the entire cell
 	public void clear() {
 		for (int row = 0; row < grid.length; row++) {
 			for (int col = 0; col < grid[row].length; col++) {
@@ -59,7 +70,8 @@ public class Spreadsheet implements Grid {
 			}
 		}
 	}
-
+	
+	//clears a particular cell
 	public void clear(String location) {
 		SpreadsheetLocation loca = new SpreadsheetLocation(location);
 		grid[loca.getRow()][loca.getCol()] = new EmptyCell();
@@ -84,20 +96,30 @@ public class Spreadsheet implements Grid {
 		return this.grid;
 	}
 
-
+	
+	/*
+	 * one of the project's most FRUSTRATING task and method
+	 * 
+	 * method creates the visual spreadsheet and 
+	 * formats the spreadsheet correctly
+	 */
 	public String getGridText() {
 		String gridOutput = "";
+		
+		//sets up the top row and fills it with the letter
 		gridOutput += "   |";
 		for (char i = 'A'; i <= 'L'; i++) {
 			gridOutput += i + "         |";
 		}
 		gridOutput += "\n";
+		
+		//sets up the rest of the spreadsheet
 		for (int i = 0; i < grid.length; i++) {
-			gridOutput += (1 + i);
-			if (i < 9) {
-				gridOutput += "  |";
+			gridOutput += (1 + i);//sets up the row # on the side
+			if (i < 9) {//helps format the pipes correctly
+				gridOutput += "  |";//adds pipes
 				for (int j = 0; j < grid[i].length; j++) {
-					gridOutput += grid[i][j].abbreviatedCellText() + "|";
+					gridOutput += grid[i][j].abbreviatedCellText() + "|";//adds the abbreviated cell at specific location
 				}
 				gridOutput += "\n";
 			} else {
@@ -111,7 +133,7 @@ public class Spreadsheet implements Grid {
 		return gridOutput;
 	}
 
-	public String contentsOfCell(String location) {
+	public String contentsOfCell(String location) {//returns the fullCelltext of the input
 		SpreadsheetLocation loca = new SpreadsheetLocation(location);
 		return getCell(loca).fullCellText();
 	}

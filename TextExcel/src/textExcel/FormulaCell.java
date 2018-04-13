@@ -1,6 +1,8 @@
 package textExcel;
 
 /**
+ * This class converts given formula inputs
+ * into a calculated double
  * 
  * @author Derfel Terciano
  * @version 1

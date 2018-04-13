@@ -31,7 +31,7 @@ public class SpreadsheetLocation implements Location {
 		if(Character.isDigit(columnLetter)) {
 			throw new IllegalArgumentException("Letter of column must always go first");
 		} else {
-			return (int)Character.toLowerCase(columnLetter)-'a';
+			return (int)Character.toLowerCase(columnLetter)-'a';//casts the character into an int
 		}
 	}
 	
