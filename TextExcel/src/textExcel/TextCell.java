@@ -29,5 +29,6 @@ public class TextCell implements Cell{
 	public TextCell(String text) {
 		this.text=text;
 	}
+	
 
 }
