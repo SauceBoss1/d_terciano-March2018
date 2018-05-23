@@ -38,6 +38,10 @@ public class Spreadsheet implements Grid {
 				clear();//clears the entire spreadsheet
 				return getGridText();
 			}
+		}else if (userCommand.length==2 && userCommand[0].toLowerCase().equals("sorta")) {
+			String[] ranges = userCommand[1].split("-");
+			sortA(ranges[0],ranges[1]);
+			return getGridText();
 		} else if (userCommand.length == 1) {//checks if user wants fullCellText returned
 			return contentsOfCell(userCommand[0]);
 		} else {
@@ -95,6 +99,11 @@ public class Spreadsheet implements Grid {
 	public Cell[][] getGrid() {
 		return this.grid;
 	}
+	
+	public void setCell(Location loc, Cell cell) {
+		grid[loc.getRow()][loc.getCol()]= cell;
+	}
+	
 
 	
 	/*
@@ -136,6 +145,53 @@ public class Spreadsheet implements Grid {
 	public String contentsOfCell(String location) {//returns the fullCelltext of the input
 		SpreadsheetLocation loca = new SpreadsheetLocation(location);
 		return getCell(loca).fullCellText();
+	}
+	public Double[] convDouble(RealCell[] arr) {
+		Double[] result = new Double[arr.length];
+		int tracker=0;
+		for(RealCell element:arr) {
+			result[tracker]=element.getDoubleValue();
+			tracker++;
+		}
+		return result;
+		
+	}
+	public RealCell[] selectionSort(RealCell[] arr, String typeOfSort) {
+		int sortType=0; //determines whether the algorithm should be ascending or descending order
+		//Double[] arr = convDouble(sort);		
+		//Double[] arr = convDouble(sort);
+		if (typeOfSort.toLowerCase().equals("ascending")) {
+			sortType=-1;
+		}else {
+			sortType=1;
+		}
+		for(int j=0;j<arr.length-1;j++){
+			int min=j;
+			for(int k = j+1;k<arr.length;k++) {
+				if(arr[k].compareTo(arr[min]) == sortType) {//compareTo only uses the Double object
+					min=k;
+				}
+			}
+			RealCell temp = arr[j];
+			arr[j]=arr[min];
+			arr[min]=temp;
+		}
+		return arr;
+	}
+	public void sortA(String rang1, String rang2) {
+		Ranges range = new Ranges(this);
+		range.setRanges(rang1, rang2);
+		RealCell[] sort = range.rangeOfDoubles();
+		selectionSort(sort, "ascending");
+		range.setGridOfDoubles(sort);
+		
+	}
+	public void sortD(String rang1, String rang2) {
+		Ranges range = new Ranges(this);
+		range.setRanges(rang1, rang2);
+		RealCell[] sort = range.rangeOfDoubles();
+		sort = selectionSort(sort, "descending");
+		range.setGridOfDoubles(sort);
 	}
 
 }

@@ -1,6 +1,6 @@
 package textExcel;
 
-public class TextCell implements Cell{
+public class TextCell implements Cell, Comparable<TextCell>{
 	private String text;
 	
 	
@@ -19,6 +19,19 @@ public class TextCell implements Cell{
 		}
 		return abbreviatedText;
 	}
+	
+	/**
+	 * returns the same numbers as the String.compareTo() method
+	 * compares two String objects
+	 */
+	public int compareTo(TextCell obj) {
+		if (obj.fullCellText()==null) {
+			throw new IllegalArgumentException("TextCell obj must have a valid string");
+		} else {
+			return fullCellText().compareTo(obj.fullCellText());
+		}
+		
+	}
 
 
 	public String fullCellText() {//like a getter method
@@ -29,6 +42,7 @@ public class TextCell implements Cell{
 	public TextCell(String text) {
 		this.text=text;
 	}
+	
 	
 
 }

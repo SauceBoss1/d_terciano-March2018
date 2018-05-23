@@ -64,7 +64,7 @@ public class FormulaCell extends RealCell {
 			 */
 			for (int i = 0; i < userFormula.length; i++) {
 				if (userFormula[i].toLowerCase().charAt(0) >= 'a' && userFormula[i].toLowerCase().charAt(0) <= 'l') {
-					userFormula[i] = doubleValueOfCell(userFormula[i], spreadsheet) + "";// replaces cell reference with
+					userFormula[i] = doubleValueOfCell(userFormula[i]) + "";// replaces cell reference with
 																							// its double Value
 				}
 			}
@@ -76,10 +76,12 @@ public class FormulaCell extends RealCell {
 	 * calculates the sum of the given range of cells
 	 */
 	public double sum(String range1, String range2) {
-		double[] userRange = range(range1, range2);
+		Ranges range = new Ranges(spreadsheet);
+		range.setRanges(range1, range2);
+		RealCell[] userRange = range.rangeOfDoubles();
 		double result = 0;
 		for (int i = 0; i < userRange.length; i++) {
-			result += userRange[i];
+			result += userRange[i].getDoubleValue();
 		}
 		return result;
 	}
@@ -88,8 +90,10 @@ public class FormulaCell extends RealCell {
 	 * calculates the average of the given range of cells
 	 */
 	public double avg(String range1, String range2) {
+		Ranges range = new Ranges(spreadsheet);
+		range.setRanges(range1, range2);
 		double userSum = sum(range1, range2);
-		double lengthOfArray = range(range1, range2).length;
+		double lengthOfArray = range.rangeOfDoubles().length;
 		return userSum / lengthOfArray;
 	}
 
@@ -121,57 +125,16 @@ public class FormulaCell extends RealCell {
 		}
 		return result;
 	}
-
-	/*
-	 * This range method puts all the cell within the given range (i.e. all cells
-	 * within a1-k20) into one long array.
-	 * 
-	 * The main purpose of this is so that the calculation of the array would become
-	 * ultimately easier
-	 */
-	public double[] range(String range1, String range2) {
-		int intIterator = Integer.parseInt(range1.toLowerCase().substring(1));// iterator for the below for-loop(rows)
-																				// This is
-																				// the first number of the row
-		int intTest = Integer.parseInt(range2.toLowerCase().substring(1));// the test case for the below for loops(rows)
-																			// This
-																			// is the last number of the row
-		char charIterator = range1.toLowerCase().charAt(0);// iterator for the below for-loop(columns) This is the
-															// first letter of the column
-		char charTest = range2.toLowerCase().charAt(0);// iterator for the below for-loop(columns) This is the last
-														// letter of the column
-		/*
-		 * size of the resulting array is determined by: multiplying the length and
-		 * width of the grid ranges selected
-		 * 
-		 * this is why I am trying to find the the length and width of the selected
-		 * ranges below
-		 */
-		double[] result = new double[(charTest - charIterator + 1) * (intTest - intIterator + 1)];
-
-		int arrTracker = 0;// keeps track of what element goes into the resulting array
-		for (int i = intIterator; i <= intTest; i++) {
-			for (char j = charIterator; j <= charTest; j++) {
-				String currentLoc = "" + j + i;// this variable keeps track of the current
-												// cell within the current iteration
-												// this also gives us the cell within the given ranges
-				result[arrTracker] = doubleValueOfCell(currentLoc, spreadsheet);// finds double at this location
-				arrTracker += 1;// helps to keep track of position of where to put the resulting
-								// getDoubleValue() in the resulting array
-			}
-		}
-		return result;
-	}
-
 	/*
 	 * ValueOfCell helps find the double at the given cell location
 	 */
-	public double doubleValueOfCell(String location, Spreadsheet spreadsheet) {
+	public double doubleValueOfCell(String location) {
 		SpreadsheetLocation loc = new SpreadsheetLocation(location);
 		Cell cellType = spreadsheet.getCell(loc);// helps find the actual cell at current location of
 													// the loop's current iteration
 		return ((RealCell) cellType).getDoubleValue();// casts the cell into a RealCell in order
 														// to get its double value
 	}
-
+	
+	
 }
