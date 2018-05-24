@@ -104,6 +104,11 @@ public class Spreadsheet implements Grid {
 		return this.grid;
 	}
 	
+	/**
+	 * sets a certain location on the grid field with a type of cell
+	 * @param loc
+	 * @param cell
+	 */
 	public void setCell(Location loc, Cell cell) {
 		grid[loc.getRow()][loc.getCol()]= cell;
 	}
@@ -150,16 +155,14 @@ public class Spreadsheet implements Grid {
 		SpreadsheetLocation loca = new SpreadsheetLocation(location);
 		return getCell(loca).fullCellText();
 	}
-	public Double[] convDouble(RealCell[] arr) {
-		Double[] result = new Double[arr.length];
-		int tracker=0;
-		for(RealCell element:arr) {
-			result[tracker]=element.getDoubleValue();
-			tracker++;
-		}
-		return result;
-		
-	}
+	
+	
+	
+	/**
+	 * sorts text cells or realCells in ascending order
+	 * @param rang1
+	 * @param rang2
+	 */
 	public void sortA(String rang1, String rang2) {
 		SpreadsheetLocation loc = new SpreadsheetLocation(rang1);
 		Ranges range = new Ranges(this,rang1, rang2);
@@ -174,6 +177,13 @@ public class Spreadsheet implements Grid {
 		}
 		
 	}
+	
+	/**
+	 * sorts realCells or textCells in descending order
+	 * 
+	 * @param rang1
+	 * @param rang2
+	 */
 	public void sortD(String rang1, String rang2) {
 		SpreadsheetLocation loc = new SpreadsheetLocation(rang1);
 		Ranges range = new Ranges(this,rang1, rang2);
