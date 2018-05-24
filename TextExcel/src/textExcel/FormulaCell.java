@@ -76,8 +76,7 @@ public class FormulaCell extends RealCell {
 	 * calculates the sum of the given range of cells
 	 */
 	public double sum(String range1, String range2) {
-		Ranges range = new Ranges(spreadsheet);
-		range.setRanges(range1, range2);
+		Ranges range = new Ranges(spreadsheet,range1, range2);
 		RealCell[] userRange = range.rangeOfDoubles();
 		double result = 0;
 		for (int i = 0; i < userRange.length; i++) {
@@ -90,8 +89,7 @@ public class FormulaCell extends RealCell {
 	 * calculates the average of the given range of cells
 	 */
 	public double avg(String range1, String range2) {
-		Ranges range = new Ranges(spreadsheet);
-		range.setRanges(range1, range2);
+		Ranges range = new Ranges(spreadsheet,range1, range2);
 		double userSum = sum(range1, range2);
 		double lengthOfArray = range.rangeOfDoubles().length;
 		return userSum / lengthOfArray;

@@ -26,8 +26,11 @@ public abstract class RealCell implements Cell, Comparable<RealCell> {
 	 */
 	public String abbreviatedCellText() {
 		String dummyInput = getUserInput();
-		if (dummyInput.contains("%") && dummyInput.contains(".")) {//checks if the input is a percent
+		if (dummyInput.contains("%")) {//checks if the input is a percent
 			//truncates the "%" where ever the dot or period  is located
+			//TODO fix Error
+			double inputAsDouble = Double.parseDouble(fullCellText());
+			dummyInput = (inputAsDouble*100) +"";
 			dummyInput = dummyInput.replace(dummyInput.substring(dummyInput.indexOf(".")), "%");
 		} else {
 			dummyInput = Double.parseDouble(dummyInput) + "";//makes all integers a double
@@ -69,8 +72,8 @@ public abstract class RealCell implements Cell, Comparable<RealCell> {
 	 * returns -1 if a<b
 	 */
 	public int compareTo(RealCell obj) {
-		Double doub1 = new Double(getDoubleValue());
-		Double doub2 = new Double(obj.getDoubleValue());
+		double doub1 = getDoubleValue();
+		double doub2 = obj.getDoubleValue();
 		if (doub1>doub2) {
 			return 1;
 		} else if(doub1==doub2) {
@@ -89,44 +92,6 @@ public abstract class RealCell implements Cell, Comparable<RealCell> {
 		}
 		return result;
 		
-	}
-	
-	public void selectionSort(RealCell[] sort, String typeOfSort) {
-		int sortType=0; //determines whether the algorithm should be ascending or descending order
-		Double[] arr = convDouble(sort);		
-		//Double[] arr = convDouble(sort);
-		if (typeOfSort.toLowerCase().equals("ascending")) {
-			sortType=-1;
-		}else {
-			sortType=1;
-		}
-		for(int j=0;j<arr.length-1;j++){
-			int min=j;
-			for(int k = j+1;k<arr.length;k++) {
-				if(arr[k].compareTo(arr[min]) == sortType) {//compareTo only uses the Double object
-					min=k;
-				}
-			}
-			double temp = arr[j];
-			arr[j]=arr[min];
-			arr[min]=temp;
-		}
-	}
-	
-	public void sortA(String rang1, String rang2) {
-		Ranges range = new Ranges(spreadsheet);
-		range.setRanges(rang1, rang2);
-		RealCell[] sort = range.rangeOfDoubles();
-		selectionSort(sort, "ascending");
-		range.setGridOfDoubles(sort);
-		
-	}
-	public void sortD(String rang1, String rang2) {
-		Ranges range = new Ranges(spreadsheet);
-		range.setRanges(rang1, rang2);
-		RealCell[] sort = range.rangeOfDoubles();
-		selectionSort(sort, "descending");
-		range.setGridOfDoubles(sort);
 	}
 }
 	

@@ -27,8 +27,12 @@ public class TextCell implements Cell, Comparable<TextCell>{
 	public int compareTo(TextCell obj) {
 		if (obj.fullCellText()==null) {
 			throw new IllegalArgumentException("TextCell obj must have a valid string");
-		} else {
-			return fullCellText().compareTo(obj.fullCellText());
+		} else if (fullCellText().compareTo(obj.fullCellText()) > 0){
+			return 1;
+		}else if(fullCellText().compareTo(obj.fullCellText()) < 0) {
+			return -1;
+		}else {
+			return 0;
 		}
 		
 	}
